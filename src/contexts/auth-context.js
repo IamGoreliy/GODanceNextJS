@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useReducer, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { methodGetPost } from '../utils/customFetch';
 
 const HANDLERS = {
   INITIALIZE: 'INITIALIZE',
@@ -9,36 +10,39 @@ const HANDLERS = {
 
 const initialState = {
   isAuthenticated: false,
-  isLoading: true,
+  isLoading: false,
   user: null
 };
 
 const handlers = {
   [HANDLERS.INITIALIZE]: (state, action) => {
-    const user = action.payload;
+    // const user = action.payload;
 
-    return {
-      ...state,
-      ...(
-        // if payload (user) is provided, then is authenticated
-        user
-          ? ({
-            isAuthenticated: true,
-            isLoading: false,
-            user
-          })
-          : ({
-            isLoading: false
-          })
-      )
-    };
+    return initialState;
+    // {
+      // ...state,
+      // ...(
+      //   // if payload (user) is provided, then is authenticated
+      //   user
+      //     ? ({
+      //       isAuthenticated: true,
+      //       isLoading: false,
+      //       user
+      //     })
+      //     : ({
+      //       isLoading: false,
+      //     })
+      // )
+
+    // };
   },
   [HANDLERS.SIGN_IN]: (state, action) => {
-    const user = action.payload;
+    const user = action.payload.user;
+    const userVer = action.payload.verification;
 
     return {
       ...state,
-      isAuthenticated: true,
+      isAuthenticated: userVer,
       user
     };
   },
@@ -66,13 +70,13 @@ export const AuthProvider = (props) => {
 
   const initialize = async () => {
     // Prevent from calling twice in development mode with React.StrictMode enabled
-    if (initialized.current) {
-      return;
-    }
+    // if (initialized.current) {
+    //   return;
+    // }
+    //
+    // initialized.current = true;
 
-    initialized.current = true;
-
-    let isAuthenticated = false;
+    let isAuthenticated, res;
 
     try {
       isAuthenticated = window.sessionStorage.getItem('authenticated') === 'true';
@@ -81,18 +85,29 @@ export const AuthProvider = (props) => {
     }
 
     if (isAuthenticated) {
-      const user = {
-        id: '5e86809283e28b96d2d38537',
-        avatar: '/assets/avatars/avatar-anika-visser.png',
-        name: 'Anika Visser',
-        email: 'anika.visser@devias.io'
-      };
+      const token = window.sessionStorage.getItem('token');
+      try{
+        res = await methodGetPost('/api/verification', 'POST', token);
 
-      dispatch({
-        type: HANDLERS.INITIALIZE,
-        payload: user
-      });
+      }catch(e){
+        console.log('catch error', e.message);
+      }
+
+      if (res.verification) {
+        const user = {
+          id: res.userData.id,
+          avatar: res.userData.avatar ?? '/assets/avatars/avatar-anika-visser.png',
+          name: res.userData.name ?? 'oksana',
+          email: res.userData.mail,
+        };
+        dispatch({
+          type: HANDLERS.INITIALIZE,
+          payload: user
+        });
+      }
     } else {
+      window.sessionStorage.removeItem('authenticated');
+      window.sessionStorage.removeItem('token');
       dispatch({
         type: HANDLERS.INITIALIZE
       });
@@ -101,7 +116,7 @@ export const AuthProvider = (props) => {
 
   useEffect(
     () => {
-      initialize();
+      // initialize();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -115,10 +130,10 @@ export const AuthProvider = (props) => {
     }
 
     const user = {
-      id: '5e86809283e28b96d2d38537',
+      id: 'guest',
       avatar: '/assets/avatars/avatar-anika-visser.png',
-      name: 'Anika Visser',
-      email: 'anika.visser@devias.io'
+      name: 'guest user',
+      email: 'guest.user@devias.io',
     };
 
     dispatch({
@@ -128,26 +143,39 @@ export const AuthProvider = (props) => {
   };
 
   const signIn = async (email, password) => {
-    if (email !== 'demo@devias.io' || password !== 'Password123!') {
-      throw new Error('Please check your email and password');
+    let res;
+    const data = {
+      email,
+      password
     }
 
     try {
-      window.sessionStorage.setItem('authenticated', 'true');
+      res = await methodGetPost('http://localhost:3000/api/authCheck', 'POST', data);
     } catch (err) {
       console.error(err);
     }
+    if (res.verification && res.token) {
+      window.sessionStorage.setItem('authenticated', `${res.verification}`);
+      window.sessionStorage.setItem('token', res.token);
 
-    const user = {
-      id: '5e86809283e28b96d2d38537',
-      avatar: '/assets/avatars/avatar-anika-visser.png',
-      name: 'Anika Visser',
-      email: 'anika.visser@devias.io'
-    };
-
+      const user = {
+        id: res.userData.id,
+        avatar: res.userData.avatar ?? '/assets/avatars/avatar-anika-visser.png',
+        name: res.userData.name ?? 'аноним',
+        email: res.userData.mail,
+      };
+      const verification = res.verification;
+      dispatch({
+        type: HANDLERS.SIGN_IN,
+        payload: {
+          user,
+          verification,
+        }
+      });
+      return;
+    }
     dispatch({
-      type: HANDLERS.SIGN_IN,
-      payload: user
+      type: HANDLERS.INITIALIZE,
     });
   };
 
@@ -168,7 +196,8 @@ export const AuthProvider = (props) => {
         skip,
         signIn,
         signUp,
-        signOut
+        signOut,
+        initialize,
       }}
     >
       {children}

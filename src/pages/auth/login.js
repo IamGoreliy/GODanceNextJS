@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Head from 'next/head';
 import NextLink from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -23,10 +23,19 @@ const Page = () => {
   const router = useRouter();
   const auth = useAuth();
   const [method, setMethod] = useState('email');
+  console.log('page auth', auth);
+
+  useEffect( () => {
+    const authStorage = window.sessionStorage.getItem('authenticated');
+    if (authStorage === 'true') {
+      router.push('/');
+    }
+  }, [])
+
   const formik = useFormik({
     initialValues: {
-      email: 'demo@devias.io',
-      password: 'Password123!',
+      email: 'test@gmail.com',
+      password: 'test123',
       submit: null
     },
     validationSchema: Yup.object({

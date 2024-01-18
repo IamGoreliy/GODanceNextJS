@@ -7,11 +7,34 @@ import UserPlusIcon from '@heroicons/react/24/solid/UserPlusIcon';
 import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
 import XCircleIcon from '@heroicons/react/24/solid/XCircleIcon';
 import { SvgIcon } from '@mui/material';
+// import {GallerySvg, CalendarSvg} from '../../iconSvgComponents/svgIconComponents';
+import {GallerySvg, CalendarSvg, HomeSvg} from '../../iconSvgComponents/svgIconComponents';
 
 export const items = [
   {
-    title: 'Overview',
+    title: 'Home Page',
     path: '/',
+    icon: (
+      <HomeSvg fontSize='small'/>
+    )
+  },
+  {
+    title: 'Gallery',
+    path: '/gallery',
+    icon: (
+      <GallerySvg fontSize='small'/>
+    )
+  },
+  {
+    title: 'Calendar',
+    path: '/calendar',
+    icon: (
+      <CalendarSvg/>
+    )
+  },
+  {
+    title: 'Dashboard',
+    path: '/dashboard',
     icon: (
       <SvgIcon fontSize="small">
         <ChartBarIcon />
