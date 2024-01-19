@@ -23,6 +23,8 @@
     "@mui/material": "5.11.10",
     "@mui/system": "5.11.9",
     "@mui/x-date-pickers": "^6.18.3",
+    "@reduxjs/toolkit": "^1.9.3",
+    "react-redux": "^8.0.5",
     "apexcharts": "3.37.0",
     "date-fns": "2.29.3",
     "dayjs": "^1.11.10",

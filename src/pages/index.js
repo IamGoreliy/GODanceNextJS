@@ -2,7 +2,8 @@ import LayoutHomePage from '../layouts/navigation/homePagelayout';
 import TitleSectionHomePage from '../sections/homePage/titleSectionHomePage';
 import SectionDanceStyleCategory from '../sections/homePage/sectionDanceStyleCategory';
 import { useLayoutEffect, useState } from 'react';
-
+import {Provider} from 'react-redux';
+import {store} from '../lib/Redux/store';
 
 const Page = () => {
   const [size, setSize] = useState('');
@@ -23,8 +24,10 @@ const Page = () => {
   }, [])
   return (
     <LayoutHomePage>
-      <TitleSectionHomePage sizeBody={size} />
-      <SectionDanceStyleCategory />
+      <Provider store={store}>
+        <TitleSectionHomePage sizeBody={size} />
+        <SectionDanceStyleCategory />
+      </Provider>
     </LayoutHomePage>
   )
 }
