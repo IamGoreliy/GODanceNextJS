@@ -3,15 +3,15 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useAuthContext } from 'src/contexts/auth-context';
 import {useSelector} from 'react-redux';
-
+import {authStore} from '../lib/Redux/selector';
 
 export const AuthGuard = (props) => {
   const { children } = props;
   const router = useRouter();
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated } = useSelector(authStore);
   const ignore = useRef(false);
   const [checked, setChecked] = useState(false);
-  const testingStore = useSelector(state => state.testStore);
+
 
 
   // Only do authentication check on component mount.
@@ -29,6 +29,8 @@ export const AuthGuard = (props) => {
       }
 
       ignore.current = true;
+
+
 
       if (!isAuthenticated) {
         console.log('Not authenticated, redirecting');

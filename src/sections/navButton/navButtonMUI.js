@@ -66,6 +66,11 @@ function ResponsiveAppBar({menuBtnNames}) {
     setAnchorElUser(null);
   };
 
+  const handleLogOut = () => {
+    window.sessionStorage.removeItem('auth');
+
+  };
+
   return (
     <AppBar position="static"
             sx={{backgroundColor: 'rgba(138, 43, 226, 0.4)'}}
@@ -187,16 +192,24 @@ function ResponsiveAppBar({menuBtnNames}) {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                // <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                //   <Typography textAlign="center">{setting}</Typography>
-                // </MenuItem>
-                <MenuItem key={setting}>
-                  <Link href={`/${setting.toLowerCase()}`}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </Link>
-                </MenuItem>
-              ))}
+              {settings.map(setting => {
+                if (setting.toLowerCase() !== 'Logout') {
+                  return(
+                    <MenuItem key={setting}>
+                      <Link href={`/${setting.toLowerCase()}`}>
+                        <Typography textAlign="center">{setting}</Typography>
+                      </Link>
+                    </MenuItem>
+                  )
+                }else {
+                  return (
+                    <MenuItem key={setting} onClick={handleLogOut}>
+                      <Typography textAlign="center">{setting}</Typography>
+                    </MenuItem>
+                  )
+                }
+
+              })}
             </Menu>
           </Box>
         </Toolbar>
@@ -205,3 +218,7 @@ function ResponsiveAppBar({menuBtnNames}) {
   );
 }
 export default ResponsiveAppBar;
+
+// <MenuItem key={setting} onClick={handleCloseUserMenu}>
+//   <Typography textAlign="center">{setting}</Typography>
+// </MenuItem>

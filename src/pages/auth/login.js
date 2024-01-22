@@ -18,17 +18,21 @@ import {
 } from '@mui/material';
 import { useAuth } from 'src/hooks/use-auth';
 import { Layout as AuthLayout } from 'src/layouts/auth/layout';
-
+import {useDispatch} from 'react-redux';
+import {singInAction, checkVerification} from '../../lib/Redux/operation';
+import {Provider} from 'react-redux';
+import {store} from '../../lib/Redux/store';
 
 const Page = () => {
   const router = useRouter();
   const auth = useAuth();
   const [method, setMethod] = useState('email');
-  console.log('page auth', auth);
+  const dispatch = useDispatch();
 
-  useEffect( () => {
-    const authStorage = window.sessionStorage.getItem('authenticated');
-    if (authStorage === 'true') {
+  useEffect(() => {
+    const authSesStore = JSON.parse(window.sessionStorage.getItem('auth')) ?? null;
+    if (authSesStore?.isAuth) {
+      dispatch(checkVerification(authSesStore?.token));
       router.push('/');
     }
   }, [])
@@ -51,14 +55,20 @@ const Page = () => {
         .required('Password is required')
     }),
     onSubmit: async (values, helpers) => {
-      try {
-        await auth.signIn(values.email, values.password);
-        router.push('/');
-      } catch (err) {
-        helpers.setStatus({ success: false });
-        helpers.setErrors({ submit: err.message });
-        helpers.setSubmitting(false);
+      // try {
+      //   await auth.signIn(values.email, values.password);
+      //   router.push('/');
+      // } catch (err) {
+      //   helpers.setStatus({ success: false });
+      //   helpers.setErrors({ submit: err.message });
+      //   helpers.setSubmitting(false);
+      // }
+      const dataVal = {
+        email: values.email,
+        password: values.password,
       }
+      dispatch(singInAction(dataVal));
+      router.push('/');
     }
   });
 
@@ -230,7 +240,9 @@ const Page = () => {
 
 Page.getLayout = (page) => (
   <AuthLayout>
+    <Provider store={store}>
       {page}
+    </Provider>
   </AuthLayout>
 );
 

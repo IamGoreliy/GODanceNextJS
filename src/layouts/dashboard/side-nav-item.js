@@ -5,7 +5,7 @@ import { Box, ButtonBase } from '@mui/material';
 
 export const SideNavItem = (props) => {
   const { active = false, disabled, external, icon, path, title } = props;
-  // console.log('icon', icon)
+
 
   const linkProps = path
     ? external

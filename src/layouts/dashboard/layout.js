@@ -28,6 +28,7 @@ export const Layout = withAuthGuard((props) => {
   const pathname = usePathname();
   const [openNav, setOpenNav] = useState(false);
 
+
   const handlePathnameChange = useCallback(
     () => {
       if (openNav) {

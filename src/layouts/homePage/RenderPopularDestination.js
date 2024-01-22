@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { HoldButtonPlayMovie } from '../../components/HoldButtonPlayMovie';
 import styled from '@emotion/styled';
-import { positions } from '@mui/system';
+// import { positions } from '@mui/system';
 
 const ThumbCard = styled((props) => {
   const {windowSize, ...other} = props;

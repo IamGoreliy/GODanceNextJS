@@ -6,7 +6,6 @@ const jwt = require('jsonwebtoken');
 import {JWTKEY} from '../../lib/db';
 
 const router = createRouter();
-// const JWTKEY = 'ALJSFFNdS';
 
 router.post(async (req, res) => {
   const userReq = req.body;

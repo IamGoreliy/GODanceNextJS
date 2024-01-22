@@ -16,25 +16,21 @@ const initialState = {
 
 const handlers = {
   [HANDLERS.INITIALIZE]: (state, action) => {
-    // const user = action.payload;
-
-    return initialState;
-    // {
-      // ...state,
-      // ...(
-      //   // if payload (user) is provided, then is authenticated
-      //   user
-      //     ? ({
-      //       isAuthenticated: true,
-      //       isLoading: false,
-      //       user
-      //     })
-      //     : ({
-      //       isLoading: false,
-      //     })
-      // )
-
-    // };
+    const user = action.payload;
+    return {...state,
+            ...(
+                // if payload (user) is provided, then is authenticated
+                user
+                  ? ({
+                    isAuthenticated: true,
+                    isLoading: false,
+                    user
+                  })
+                  : ({
+                    isLoading: false,
+          })
+      )
+    };
   },
   [HANDLERS.SIGN_IN]: (state, action) => {
     const user = action.payload.user;
