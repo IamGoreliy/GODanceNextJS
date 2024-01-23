@@ -1,3 +1,4 @@
+'use client'
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -12,13 +13,16 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Link from 'next/link';
-import {useMemo} from 'react';
-import {toast} from 'react-toastify';
+import {useEffect, useState} from 'react';
 import styled from '@emotion/styled';
-// import AdbIcon from '@mui/icons-material/Adb';
+import { useDispatch } from 'react-redux';
+import {logout} from '../../lib/Redux/userAuthSlice';
+import {createBtnHref} from './createHeaderBtnHref';
+import {authStoreSelect} from '../../lib/Redux/selector';
+import {useSelector} from 'react-redux';
+import {RenderingUserSettingsBtn} from './renderingUserSettingsBtn';
 
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Dashboard', 'Logout'];
+// const userSettingsButton = ['Dashboard', 'Logout', 'login'];
 
 const LinkCustomStyled = styled.a`
   text-decoration: none;
@@ -26,27 +30,25 @@ const LinkCustomStyled = styled.a`
 `
 
 function ResponsiveAppBar({menuBtnNames}) {
-  const btnHref = useMemo(() => {
-    return menuBtnNames.reduce((acc, ele) => {
-    switch (ele) {
-      case 'Галлерея':
-        acc.push('gallery');
-        break;
-      case 'Календарь':
-        acc.push('calendar');
-        break;
-      case 'Контакты':
-        acc.push('contact');
-        break;
-      case 'Чат Телеграм':
-        acc.push('chatTelegram');
-        break;
-      default:
-        toast.error(`данного линка ${ele} нет в списке`)
+  const [linkBtn, setLinkBtn] = useState([]);
+  const {isAuthenticated} = useSelector(authStoreSelect);
+  const [settingsButton, setSettingsButton] = useState([]);
+  const dispatch = useDispatch();
+
+
+
+  useEffect(() => {
+    const createLink = createBtnHref(menuBtnNames);
+    if (isAuthenticated || !!window.sessionStorage.getItem('auth')) {
+      setSettingsButton(['Dashboard', 'Logout']);
+    } else {
+      setSettingsButton(['login']);
     }
-    return acc;
-  }, []);
-  }, [menuBtnNames]);
+
+    setLinkBtn(createLink);
+
+  }, [menuBtnNames, isAuthenticated])
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -62,13 +64,12 @@ function ResponsiveAppBar({menuBtnNames}) {
   };
 
   const handleCloseUserMenu = () => {
-
     setAnchorElUser(null);
   };
 
   const handleLogOut = () => {
+    dispatch(logout())
     window.sessionStorage.removeItem('auth');
-
   };
 
   return (
@@ -160,7 +161,7 @@ function ResponsiveAppBar({menuBtnNames}) {
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 <Link
-                  href={`/${btnHref[index]}`}
+                  href={`/${linkBtn[index]}`}
                   passHref
                   legacyBehavior
                 >
@@ -192,24 +193,7 @@ function ResponsiveAppBar({menuBtnNames}) {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map(setting => {
-                if (setting.toLowerCase() !== 'Logout') {
-                  return(
-                    <MenuItem key={setting}>
-                      <Link href={`/${setting.toLowerCase()}`}>
-                        <Typography textAlign="center">{setting}</Typography>
-                      </Link>
-                    </MenuItem>
-                  )
-                }else {
-                  return (
-                    <MenuItem key={setting} onClick={handleLogOut}>
-                      <Typography textAlign="center">{setting}</Typography>
-                    </MenuItem>
-                  )
-                }
-
-              })}
+              <RenderingUserSettingsBtn btnNames={settingsButton}/>
             </Menu>
           </Box>
         </Toolbar>

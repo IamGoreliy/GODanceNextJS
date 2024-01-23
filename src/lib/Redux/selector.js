@@ -1,3 +1,3 @@
 import {useSelector} from 'react-redux';
 
-export const authStore = state => state.authStore;
+export const authStoreSelect = state => state.authStore;

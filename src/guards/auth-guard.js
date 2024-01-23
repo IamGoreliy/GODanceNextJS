@@ -3,12 +3,12 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useAuthContext } from 'src/contexts/auth-context';
 import {useSelector} from 'react-redux';
-import {authStore} from '../lib/Redux/selector';
+import {authStoreSelect} from '../lib/Redux/selector';
 
 export const AuthGuard = (props) => {
   const { children } = props;
   const router = useRouter();
-  const { isAuthenticated } = useSelector(authStore);
+  const { isAuthenticated } = useSelector(authStoreSelect);
   const ignore = useRef(false);
   const [checked, setChecked] = useState(false);
 

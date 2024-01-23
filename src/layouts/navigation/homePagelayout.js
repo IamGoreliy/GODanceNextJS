@@ -3,6 +3,8 @@ import ResponsiveAppBar from '../../sections/navButton/navButtonMUI';
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useState } from 'react';
+import {Provider} from 'react-redux';
+import {store} from '../../lib/Redux/store';
 
 const testFetch = async () => {
   const testUrl = '/api/data';
@@ -21,8 +23,9 @@ const LayoutHomePage = ({children}) => {
   return (
     <>
       {/*<NavButton menuBtnNames={['Галлерея', 'Календарь', 'Контакты', 'Чат Телеграм']}/>*/}
-
+      <Provider store={store}>
       <ResponsiveAppBar menuBtnNames={['Галлерея', 'Календарь', 'Контакты', 'Чат Телеграм']}/>
+      </Provider>
       <ToastContainer/>
       {children}
       <button

@@ -54,15 +54,7 @@ const Page = () => {
         .max(255)
         .required('Password is required')
     }),
-    onSubmit: async (values, helpers) => {
-      // try {
-      //   await auth.signIn(values.email, values.password);
-      //   router.push('/');
-      // } catch (err) {
-      //   helpers.setStatus({ success: false });
-      //   helpers.setErrors({ submit: err.message });
-      //   helpers.setSubmitting(false);
-      // }
+    onSubmit: (values, helpers) => {
       const dataVal = {
         email: values.email,
         password: values.password,
