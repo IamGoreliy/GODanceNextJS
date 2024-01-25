@@ -6,7 +6,7 @@ import {logout} from '../../lib/Redux/userAuthSlice';
 
 const followingLink = (router, linkBtn, nameBtn, dispatch) => {
   if (nameBtn !== 'logout') {
-    router.push(`/${linkBtn}`);
+    router.push(linkBtn);
     return;
   }
   dispatch(logout());

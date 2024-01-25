@@ -30,14 +30,14 @@ const states = [
   }
 ];
 
-export const AccountProfileDetails = () => {
+export const AccountProfileDetails = ({userData}) => {
   const [values, setValues] = useState({
-    firstName: 'Anika',
-    lastName: 'Visser',
-    email: 'demo@devias.io',
+    firstName: userData?.name,
+    lastName: userData?.secondName,
+    email: userData?.mail,
     phone: '',
-    state: 'los-angeles',
-    country: 'USA'
+    state: userData?.city,
+    country: userData?.country,
   });
 
   const handleChange = useCallback(
@@ -53,6 +53,7 @@ export const AccountProfileDetails = () => {
   const handleSubmit = useCallback(
     (event) => {
       event.preventDefault();
+
     },
     []
   );

@@ -33,7 +33,8 @@ const Page = () => {
     const authSesStore = JSON.parse(window.sessionStorage.getItem('auth')) ?? null;
     if (authSesStore?.isAuth) {
       dispatch(checkVerification(authSesStore?.token));
-      router.push('/');
+        // router.back(); 🌈функция которая возвращает пользователя на страницу с которй пришел
+        router.push('/');
     }
   }, [])
 
@@ -99,7 +100,7 @@ const Page = () => {
           sx={{
             maxWidth: 550,
             px: 3,
-            py: '100px',
+            py: '50px',
             width: '100%'
           }}
         >
@@ -108,7 +109,7 @@ const Page = () => {
               spacing={1}
               sx={{ mb: 3 }}
             >
-              <Typography variant="h4">
+              <Typography variant="h4" sx={{textAlign: 'center'}}>
                 Login
               </Typography>
               <Typography

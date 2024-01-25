@@ -20,6 +20,7 @@ const userAuthSlice = createSlice({
         state.token = null;
         state.error = null;
         state.logout = true;
+        window.sessionStorage.removeItem('auth');
       }
   },
   extraReducers: builder =>

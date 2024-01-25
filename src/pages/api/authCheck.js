@@ -27,8 +27,11 @@ router.post(async (req, res) => {
     userData = userData.reduce((acc, user) => {
       acc.id = user.id;
       acc.name = user.name;
+      acc.secondName = user['second_name'];
       acc.mail = user.mail;
       acc.avatar = user.avatar;
+      acc.country = user.country;
+      acc.city = user.city;
       return acc;
     }, {});
 

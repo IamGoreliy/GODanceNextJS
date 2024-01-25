@@ -68,8 +68,7 @@ function ResponsiveAppBar({menuBtnNames}) {
   };
 
   const handleLogOut = () => {
-    dispatch(logout())
-    window.sessionStorage.removeItem('auth');
+    dispatch(logout());
   };
 
   return (
