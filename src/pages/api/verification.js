@@ -7,13 +7,13 @@ import {JWTKEY} from '../../lib/db';
 const router = createRouter();
 
 router.post(async (req, res) => {
-  const userReq = req.body;
+  const userToken = req.body;
   const userAgent = req.headers['user-agent'];
   let decoded, connection, lastAuth, userData;
   try {
     try {
-      decoded = jwt.decode(userReq, JWTKEY);
-      console.log(decoded)
+      decoded = jwt.decode(userToken, JWTKEY);
+
     }catch (e) {
       throw new Error ('поломка при работе jwt');
     }
@@ -38,8 +38,11 @@ router.post(async (req, res) => {
           userData = userData.reduce((acc, user) => {
             acc.id = user.id;
             acc.name = user.name;
+            acc.secondName = user['second_name'];
             acc.mail = user.mail;
             acc.avatar = user.avatar;
+            acc.country = user.country;
+            acc.city = user.city;
             return acc;
           }, {});
       } catch (e) {

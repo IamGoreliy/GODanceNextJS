@@ -17,7 +17,7 @@ import { alpha } from '@mui/material/styles';
 import { usePopover } from 'src/hooks/use-popover';
 import { AccountPopover } from './account-popover';
 import {useSelector} from 'react-redux';
-import {authStoreSelect} from '../../lib/Redux/selector';
+import {authStoreSelect, userData} from '../../lib/Redux/selector';
 
 const SIDE_NAV_WIDTH = 280;
 const TOP_NAV_HEIGHT = 64;
@@ -28,7 +28,7 @@ export const TopNav = (props) => {
   const { onNavOpen } = props;
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   const accountPopover = usePopover();
-  const {user} = useSelector(authStoreSelect);
+  const {user} = useSelector(userData);
 
 
   return (

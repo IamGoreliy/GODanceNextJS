@@ -6,11 +6,11 @@ import { useAuth } from 'src/hooks/use-auth';
 import {useDispatch} from 'react-redux';
 import {logout} from '../../lib/Redux/userAuthSlice';
 import {useSelector} from 'react-redux';
-import {authStoreSelect} from '../../lib/Redux/selector';
+import {authStoreSelect, userData} from '../../lib/Redux/selector';
 
 export const AccountPopover = (props) => {
   const { anchorEl, onClose, open } = props;
-  const { user } = useSelector(authStoreSelect);
+  const { user } = useSelector(userData);
   const router = useRouter();
   const auth = useAuth();
   const dispatch = useDispatch();

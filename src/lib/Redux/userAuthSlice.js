@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {singInAction, checkVerification} from './operation';
+import {singInAction} from './operation';
 
 
 const userAuthSlice = createSlice({
@@ -7,7 +7,7 @@ const userAuthSlice = createSlice({
   initialState: {
     isAuthenticated: false,
     isLoading: false,
-    user: null,
+    // user: null,
     token: null,
     error: null,
     logout: false,
@@ -16,7 +16,7 @@ const userAuthSlice = createSlice({
       logout(state) {
         state.isAuthenticated = false;
         state.isLoading = false;
-        state.user = null;
+        // state.user = null;
         state.token = null;
         state.error = null;
         state.logout = true;
@@ -28,7 +28,7 @@ const userAuthSlice = createSlice({
       .addCase(singInAction.pending, state => {
         state.isAuthenticated = false;
         state.isLoading = true;
-        state.user = null;
+        // state.user = null;
         state.token = null;
         state.error = null;
         state.logout = false;
@@ -36,7 +36,7 @@ const userAuthSlice = createSlice({
       .addCase(singInAction.fulfilled, (state, action) => {
         state.isAuthenticated = true
         state.isLoading = false;
-        state.user = action.payload.userData;
+        // state.user = action.payload.userData;
         state.token = action.payload.token;
         state.error = null;
         state.logout = false;
@@ -45,35 +45,12 @@ const userAuthSlice = createSlice({
       .addCase(singInAction.rejected, (state, action) => {
         state.isAuthenticated = false;
         state.isLoading = false;
-        state.user = null;
+        // state.user = null;
         state.token = null;
         state.error = action.payload;
         state.logout = false;
       })
-      .addCase(checkVerification.pending, state => {
-        state.isAuthenticated = false;
-        state.isLoading = true;
-        state.user = null;
-        state.token = null;
-        state.error = null;
-        state.logout = false;
-      })
-      .addCase(checkVerification.fulfilled, (state, action) => {
-        state.isAuthenticated = true;
-        state.isLoading = false;
-        state.user = action.payload.userData;
-        state.token = action.payload.token;
-        state.error = null;
-        state.logout = false;
-      })
-      .addCase(checkVerification.rejected, (state, action) => {
-        state.isAuthenticated = false;
-        state.isLoading = false;
-        state.user = null;
-        state.token = null;
-        state.error = action.payload;
-        state.logout = false;
-      })
+
 
 })
 

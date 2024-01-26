@@ -1,16 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { useAuthContext } from 'src/contexts/auth-context';
-import {useSelector} from 'react-redux';
-import {authStoreSelect} from '../lib/Redux/selector';
+import {useDispatch} from 'react-redux';
+import {checkVerification} from '../lib/Redux/operation';
 
 export const AuthGuard = (props) => {
   const { children } = props;
   const router = useRouter();
-  const { isAuthenticated } = useSelector(authStoreSelect);
   const ignore = useRef(false);
   const [checked, setChecked] = useState(false);
+  const dispatch = useDispatch();
 
 
 
@@ -19,6 +18,7 @@ export const AuthGuard = (props) => {
   // triggered and will automatically redirect to sign-in page.
 
   useEffect( () => {
+      const { isAuth: isAuthSession, token } = JSON.parse(window.sessionStorage.getItem('auth'));
       if (!router.isReady) {
         return;
       }
@@ -32,7 +32,7 @@ export const AuthGuard = (props) => {
 
 
       // 🦄🦄🦄можно сделвть доп запрос на сервер для проверки аутентификации user в случаи если Redux store почищен а есть только auth в sessionStore. Это необходимо так как при очистке Redux store и перехода в Dashboard authGuard делает проверку так как Redux store очищен перекидует на страничку /auth/login. В auth/login запускается useEffect который выполняет проверку sessionStore и в случаи успешной проверки в Redux Store  запишится обновленная информация о user  и только после /auth/login перенаправляет на гдавную страницу а от главной страницы можна уже добратся к Dashboard (authGuard также выполнит повторно проверку но данные в Redux store обновились проверка будет выполнена успешно🦄🦄🦄)
-      if (!isAuthenticated) {
+      if (!isAuthSession) {
         console.log('Not authenticated, redirecting');
         router
           .replace({
@@ -41,6 +41,7 @@ export const AuthGuard = (props) => {
           })
           .catch(console.error);
       } else {
+        dispatch(checkVerification(token))
         setChecked(true);
       }
     },

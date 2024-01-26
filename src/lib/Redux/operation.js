@@ -28,7 +28,18 @@ export const checkVerification = createAsyncThunk(
       return thunkAPI.rejectWithValue(e.message);
     }
   }
+);
+
+export const editUser = createAsyncThunk(
+  'user/edit',
+  async (data, thunkAPI) => {
+    const URL = ''
+    try {
+
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
 )
 
-//нужно написать функцию которая будет заходить в бузу и оставлять отметку что сессия завершина (если такое возможно) --- скоре всего нет так как у нас сессия тяжело будет контролировать сам ли ты вышел из сесси или закрытие браузера закрыло сессию на сервере не будет понятно.
 

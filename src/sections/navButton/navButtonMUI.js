@@ -18,11 +18,10 @@ import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
 import {logout} from '../../lib/Redux/userAuthSlice';
 import {createBtnHref} from './createHeaderBtnHref';
-import {authStoreSelect} from '../../lib/Redux/selector';
+import {authStoreSelect, userData} from '../../lib/Redux/selector';
 import {useSelector} from 'react-redux';
 import {RenderingUserSettingsBtn} from './renderingUserSettingsBtn';
 
-// const userSettingsButton = ['Dashboard', 'Logout', 'login'];
 
 const LinkCustomStyled = styled.a`
   text-decoration: none;

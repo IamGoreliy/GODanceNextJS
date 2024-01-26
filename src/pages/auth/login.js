@@ -32,9 +32,9 @@ const Page = () => {
   useEffect(() => {
     const authSesStore = JSON.parse(window.sessionStorage.getItem('auth')) ?? null;
     if (authSesStore?.isAuth) {
-      dispatch(checkVerification(authSesStore?.token));
+      // dispatch(checkVerification(authSesStore?.token));
         // router.back(); 🌈функция которая возвращает пользователя на страницу с которй пришел
-        router.push('/');
+      router.push('/');
     }
   }, [])
 

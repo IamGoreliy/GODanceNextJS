@@ -4,10 +4,10 @@ import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { AccountProfile } from 'src/sections/account/account-profile';
 import { AccountProfileDetails } from 'src/sections/account/account-profile-details';
 import {useSelector} from 'react-redux';
-import {authStoreSelect} from '../lib/Redux/selector';
+import {authStoreSelect, userData} from '../lib/Redux/selector';
 
 const Page = () => {
-  const {user} = useSelector(authStoreSelect);
+  const {user} = useSelector(userData);
   return (
     <>
       <Head>
